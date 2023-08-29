@@ -1,4 +1,4 @@
-/*Aluno Marco Antônio Samuelsson, BCC 2023.4*/
+/*Alunos Marco Antônio Samuelsson e Vitor Gonçalves, BCC 2023.4*/
 
 SELECT * FROM chicago
 
