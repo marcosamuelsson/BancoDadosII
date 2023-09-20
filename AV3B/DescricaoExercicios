@@ -1,0 +1,167 @@
+ALUNOS: Marco Antonio e Vitor Gonçalves
+
+
+A1)elaborar e fornecer comandos SQL que utilizem os recursos 
+abaixo. Além do comando SQL, você deve fornecer também uma 
+descrição textual explicando no que consistem os resultados 
+retornados. Caso queira, pode também explicar o SQL.
+
+a) consulta aninhada
+
+"Encontrar todos os atores que atuaram em pelo menos um filme. A 
+consulta externa seleciona os nomes dos atores da tabela actor. A 
+consulta aninhada é usada para encontrar os IDs dos atores
+que estão na tebela film_actor. O WHERE na consulta externa compara 
+os IDs dos atores com os IDs obtidos na consulta aninhada, 
+retornando assim os atores que atuaram em pelo menos um filme."
+
+SELECT first_name, last_name
+FROM actor 
+WHERE actor_id IN (
+	SELECT actor_id
+	FROM film_actor);
+	
+b) consultas aninhadas correlacionadas
+
+"Neste exercício, o intuito é procurar todos os atores que atuaram 
+no filme 'SUPER WYOMING'. A consulta aninhada é usada para 
+encontrar o 'film_id' com base no título do filme e, em 
+sequida, outra consulta aninhada é utilizada para encontrar os 
+atores associados a esse 'film_id'."
+
+SELECT actor_id, first_name, last_name
+FROM actor 
+WHERE actor_id IN (
+	SELECT actor_id
+	FROM film_actor
+	WHERE film_id = (
+		SELECT film_id 
+		FROM film 
+		WHERE title = 'SUPER WYOMING')
+		);
+
+c) exits
+
+"A consulta principal seleciona os nomes dos clientes da tabela 
+custumer. A subconsulta dentro do EXISTS verifique se existe um 
+registro na tabela rental onde o custumer_id da tabela 
+custemer corresponde ao custumer_id na tabela rental. Se a consulta 
+encontrar pelo menos um registro, a condição EXISTS será verdadeira 
+e o cliente será incluindo no resultado final."
+
+SELECT first_name, last_name
+FROM customer c  
+WHERE EXISTS (
+	SELECT 1
+	FROM rental r
+	WHERE r.customer_id = c.customer_id);
+
+d) distinct 
+
+"Neste exercício, o intuito é selecionar a coluna category_id. 
+Usando o operador DISTINCT, garante-se que apenas valores únicos na 
+coluna category_id sejam retornados."
+
+SELECT DISTINCT category_id  
+FROM category;
+
+e) junções natural
+
+"Neste exercício, o intuito é unir, por meio de junção natural, as 
+tabelas actor e film_actor, com base na coluna actor_id. Para isso
+usa-se a junção interna INNER JOIN. Esta consulta deve retornar os
+nomes dos atores e os IDs dos filmes que eles atuaram."
+
+SELECT actor.first_name, actor.last_name, film_actor.film_id
+FROM actor
+INNER JOIN film_actor ON actor.actor_id = film_actor.actor_id;
+
+f) junção right
+
+"Nesta operação, a junção RIGHT JOIN tem por objetivo encontrar 
+todos os atores e os filmes que eles atuaram. Primeiro se 
+seleciona o nome dos atores e os título dos filmes. Então se usa
+duas junções RIGHT JOIN para unir as tabelas actor, film_actor e 
+film. Isso nos permite obter os atores e os filmes em que eles
+atuaram, incluindo atores que não atuaram em nenhum filme."
+
+SELECT actor.first_name, actor.last_name, film.title
+FROM actor
+RIGHT JOIN film_actor ON actor.actor_id = film_actor.actor_id
+RIGHT JOIN film ON film_actor.film_id = film.film_id;
+
+g) agregação
+
+"Aqui usa-se a função de agregação COUNT(*) para contar todos os
+registros na tabela custumer. O uso de AS total_clientes atribui 
+um nome à coluna resultante. O resultado desta coluna será um único 
+valor que representa o número total de clientes na tabela custumer
+do banco de dados sakila."
+
+SELECT COUNT(*) AS total_clientes
+FROM customer;
+
+h) group by
+
+"Nesta operação, o intuito é encontrar o número de alugueis por
+mês. Assim, seleciona-se o mês da coluna rental_date usando a 
+função MONTH para extrair o mês a partir da data. Também usa-se
+a função de agregação COUNT para contar o número de alugueis em
+cada mês. A cláusula GROUP BY mes serve para agrupar os 
+resultados pelo mês. Então usamos a cláusula ORDER BY mes para 
+ordenar os resultados por mês em ordem crescente."
+
+SELECT MONTH(rental_date) AS mes, COUNT(*) AS total_alugueis
+FROM rental
+GROUP BY mes
+ORDER BY mes;
+
+A2) fornecer o comando de criação de uma visão (view);
+
+"Nesta operação, criou-se uma visão chamada filme_categoria que
+contém informações sobre os filmes e suas categorias. A visão ou 
+view inclui o ID do filme, o título do filme e o nome da 
+categoria. Usa-se o INNER JOIN para combinar as tabelas film, 
+film_category e category com base nas colunas de relacionamento."
+
+SELECT * FROM view_filmes_categoria;
+CREATE VIEW view_filmes_categoria AS
+SELECT f.film_id,f.title AS titulo,c.name AS categoria
+FROM film AS f
+INNER JOIN film_category AS fc ON f.film_id = fc.film_id
+INNER JOIN category AS c ON fc.category_id = c.category_id;
+
+A3) elaborar um programa (sugentão: em python) que percorra os 
+registros obtidos por um dos comando SQL's que foi criado nos 
+itens "a" a "h".
+
+"Este código percorre todos os dados obtidos por meio da operação
+SQL do item h."
+
+import mysql.connector
+
+# configurações de acesso ao MySQL
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="root",
+  password="root",
+  database="sakila"
+)
+
+# conexão com o banco de dados
+mycursor = mydb.cursor()
+
+# comando da atividade h da A2, exercício AV3B
+mycursor.execute("""SELECT MONTH(rental_date) AS mes, COUNT(*) AS total_alugueis
+                FROM rental
+                GROUP BY mes
+                ORDER BY mes;""")
+
+# obter os resultados 
+myresult = mycursor.fetchall()
+
+# percorrer os resultados
+for x in myresult:
+  print(x)
+
+
