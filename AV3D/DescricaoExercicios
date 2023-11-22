@@ -9,4 +9,6 @@ quantidade de resgistros a serem lidos e consequentemente seu tempo reduziu cons
 #Select Mais Otimizado
 No terceiro script foi realizado com as condições do script anterior com mais um corte de leitura de registros usando um 
 LIMIT = 200 (vai somente ler os 200 primeiros registros com as condições estabelecidas). Esse script se tornou o mais 
-rápido entre os três, ou seja, mais otimizad.
+rápido entre os três, ou seja, mais otimizado.
+
+O banco de dados utilizado foi aquele disponibilizado no docs com mais de 7 milhões de registros. Desta forma, ele está zippado.
