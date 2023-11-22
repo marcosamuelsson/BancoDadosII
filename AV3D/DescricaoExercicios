@@ -1,0 +1,12 @@
+#Select Comum
+No primeiro script foi feito um SElECT comum, onde se usa "*" para selecionar todos as colunas e todos os campos. 
+Isso tornou o script lento, pois teve que ler muitos registros apesar de ter uma cláusula WHERE delimitando. 
+
+#Selecct Otimizado
+No segundo script foi feito um SELECT somente com alguns campos além da cláusula WHERE reduzindo drasticamente a 
+quantidade de resgistros a serem lidos e consequentemente seu tempo reduziu consideravelmente. 
+
+#Select Mais Otimizado
+No terceiro script foi realizado com as condições do script anterior com mais um corte de leitura de registros usando um 
+LIMIT = 200 (vai somente ler os 200 primeiros registros com as condições estabelecidas). Esse script se tornou o mais 
+rápido entre os três, ou seja, mais otimizad.

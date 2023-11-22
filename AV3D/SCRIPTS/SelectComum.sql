@@ -1,0 +1,1 @@
+	SELECT * FROM companies_sorted WHERE industry = "military";
