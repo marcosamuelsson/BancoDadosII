@@ -1,0 +1,20 @@
+-- Conexão 1
+START TRANSACTION;
+
+-- Conexão 2
+START TRANSACTION;
+
+-- Na tabela 1, bloqueie algumas tabelas
+LOCK TABLES actor WRITE, film READ;
+
+-- Na conexão 2, bloqueie as mesmas tabelas, mas em ordem inversa
+LOCK TABLES film READ, actor WRITE;
+
+-- Ambas as transações estão agora bloqueadas e um deadlock ocorrerá
+-- Commit ou rollback em uma das transações resultará em erro de deadlock
+
+-- Na prática, não se esqueça de desbloquear as tabelas
+-- Normalmente, isso seria feito no final de uma transação
+
+-- Aqui, será feito apenas para evitar vazamento de bloqueio em caso de erro
+UNLOCK TABLES;

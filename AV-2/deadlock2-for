@@ -1,0 +1,19 @@
+-- Na 1° conexão
+start transaction;
+
+-- Na 2° conexão
+start transaction
+
+1° CASO
+-- Na conexão 1, bloqueie algumas linhas na tabela actor com FOR UPDATE
+select * from actor where actor_id in (1, 2, 3) for update;
+
+-- Na 2° conexão, bloqueie algumas linhas na tabela actor com FOR SHARE
+select * from actor where actor_id in (1, 2, 3) for share;
+
+2° CASO
+- Na conexão 1, tente bloquear algumas linhas na tabela actor com FOR SHARE
+select * from actor where actor_id in (4, 5, 6) for share;
+
+-- Na conexão 2, tente bloquear algumas linhas na tabela actor com FOR UPDATE;
+select * from actor where actor_id in (4, 5, 6) for update;

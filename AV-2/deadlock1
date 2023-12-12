@@ -1,0 +1,14 @@
+-- Abrindo a 1° transação
+start transaction;
+
+-- Abrindo a 2° transação
+start transaction;
+
+-- Na conexão 1, tente atualizar a tabela film_actor
+update film_actor set actor_id = actor_id where film_id = 1;
+
+-- Na conexão 2, tente atualizar a tabela film_category
+update film_category set category_id = category_id where film_id = 1;
+
+-- Ainda na conexão 2, tente atualizar a tabela film_actor
+update film_actor set actor_id = actor_id where film_id = 1;
