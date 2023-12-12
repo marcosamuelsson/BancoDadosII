@@ -1,0 +1,23 @@
+-- Transação 1
+START TRANSACTION;
+
+-- Bloqueia a tabela film
+LOCK TABLES film WRITE;
+
+-- Desbloqueia a tabela
+UNLOCK TABLES;
+
+-- Commit ou rollback da transação 1
+COMMIT;
+
+-- Transação 2
+START TRANSACTION;
+
+-- Tenta bloquear a tabela film
+LOCK TABLES film READ;
+
+-- Desbloqueia a tabela 
+UNLOCK TABLES;
+
+-- Commit ou rollback da transação
+COMMIT;
